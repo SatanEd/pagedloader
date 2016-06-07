@@ -1,7 +1,9 @@
 var fs = require('fs');
+var system = require('system');
+var args = system.args;
 var page = require('webpage').create();
 
-var linkToPage = 'http://ro.bunion-fix.com/';
+var linkToPage = args[1];
 
 page.open(linkToPage, function () {
     page.includeJs('https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js', function () {
@@ -39,11 +41,17 @@ page.open(linkToPage, function () {
                 "ga('create', 'UA-45631401-13', 'auto');ga('send', 'pageview');" +
                 "</script>");
 
-            return [$('html').html().toString(), imgSrc, jsSrc, cssHref];
+            return {
+                content: $('html').html().toString(),
+                images: imgSrc,
+                js: jsSrc,
+                css: cssHref
+            };
         });
-        fs.write('indexss.html', "<!DOCTYPE html>\n<html>\n" + gg[0].toString() + "\n</html>", function () {
-            console.log('File was created');
-        });
+        if (gg) {
+            console.log(JSON.stringify(gg));
+        }
+        phantom.exit();
     });
 });
 
@@ -51,5 +59,3 @@ page.open(linkToPage, function () {
 page.onConsoleMessage = function(msg) {
     console.log('Page title is ' + msg);
 };
-
-phantom.exit();
