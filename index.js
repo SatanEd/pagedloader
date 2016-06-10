@@ -1,9 +1,7 @@
 var fs = require('fs');
-var system = require('system');
-var args = system.args;
 var page = require('webpage').create();
 
-var linkToPage = args[1];
+var linkToPage = 'http://ro.bunion-fix.com/';
 
 page.open(linkToPage, function () {
     page.includeJs('https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js', function () {
@@ -43,15 +41,13 @@ page.open(linkToPage, function () {
 
             return {
                 content: $('html').html().toString(),
-                images: imgSrc,
-                js: jsSrc,
-                css: cssHref
+                imgs: imgSrc,
+                jss: jsSrc,
+                csss: cssHref
             };
         });
-        if (gg) {
             console.log(JSON.stringify(gg));
-        }
-        phantom.exit();
+            phantom.exit();
     });
 });
 
@@ -59,3 +55,4 @@ page.open(linkToPage, function () {
 page.onConsoleMessage = function(msg) {
     console.log('Page title is ' + msg);
 };
+
