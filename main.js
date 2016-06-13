@@ -35,37 +35,24 @@ exec('phantomjs index.js http://google.com/', function(error, stdout, stderr) {
     // }
 
     // paths = [wpSource.csss, wpSource.imgs, wpSource.jsss];
-    //
-    // var getSource = (lnk) => {
-    //     if (lnk) {
-    //         var lnkSep = lnk.split('/');
-    //         var protocol = lnkSep[0], ext;
-    //         var fileName = path.basename(lnk);
-    //
-    //         if (fileName.search(/\?/)) {
-    //             fileName = fileName.split('?')[0];
-    //         }
-    //
-    //         if (path.extname(fileName) == '') {
-    //             ext = path.extname(fileName);
-    //         } else {
-    //             ext = 'none';
-    //         }
-    //
-    //         if (protocol == 'http:') {
-    //
-    //         } else if (protocol == 'https:') {
-    //
-    //         } else {
-    //
-    //         }
-    //     } else {
-    //         return 'Link is undefined';
-    //     }
-    // }
+    var outdirs = ['img', 'css', 'js'];
 
-    var httpGet = (filePath, fileName, ext, outdir) => {
-        var method = http;
+    var httpGet = (filePath) => {
+        var method = http, ext, outdir;
+        var fileName = path.basename(filePath);
+
+        if (fileName.search(/\?/)) {
+            fileName = fileName.split('?')[0];
+        }
+
+        if (path.extname(fileName) == '') {
+            ext = path.extname(fileName);
+        } else {
+            ext = 'none';
+        }
+
+        outdir = outdirs.indexOf(ext.substring(1)) ? outdirs[outdirs.indexOf(ext.substring(1))] : outdirs[0];
+
         if (filePath.substring(0,6) == 'https') {
             method = https;
         }
@@ -82,7 +69,7 @@ exec('phantomjs index.js http://google.com/', function(error, stdout, stderr) {
             var writer = fs.createWriteStream(`${outdir}/${fileName + ext}`, {
                 flags: 'w+',
                 fd: null,
-                mode: 0o666,
+                mode: 0o777,
                 autoClose: true
             });
 
