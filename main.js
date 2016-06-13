@@ -64,9 +64,9 @@ exec('phantomjs index.js http://google.com/', function(error, stdout, stderr) {
     //     }
     // }
 
-    var httpGet = (protocol, filePath, fileName, ext, outdir) => {
+    var httpGet = (filePath, fileName, ext, outdir) => {
         var method = http;
-        if (protocol == 'https:') {
+        if (filePath.substring(0,6) == 'https') {
             method = https;
         }
 
@@ -79,7 +79,7 @@ exec('phantomjs index.js http://google.com/', function(error, stdout, stderr) {
         }
 
         method.get(filePath, (res) => {
-            var writer = fs.createWriteStream(outdir + '/' + fileName + ext, {
+            var writer = fs.createWriteStream(`${outdir}/${fileName + ext}`, {
                 flags: 'w+',
                 fd: null,
                 mode: 0o666,
@@ -98,8 +98,6 @@ exec('phantomjs index.js http://google.com/', function(error, stdout, stderr) {
         });
     };
 
-    httpGet('https:', 'https://laravel.com/docs/5.0/templates', 'logo', '.html', 'css');
-    httpGet('http', 'http://phantomjs.org/img/phantomjs-logo.png', 'zz', '.png', 'css');
 
     // console.log(wpSource.jss[0].split('/'));
 
