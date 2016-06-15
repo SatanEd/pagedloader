@@ -1,13 +1,24 @@
-var fs = require('fs');
-var http = require('http');
-var https = require('https');
-var url = require("url");
-var path = require("path");
-var paths = [], resKeys;
-var domain = 'http://ro.bunion-fix.com/';
-
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
+const url = require("url");
+const path = require("path");
 const exec = require('child_process').exec;
-exec('phantomjs index.js http://ro.bunion-fix.com/', function(error, stdout, stderr) {
+var paths = [], resKeys;
+var address = 'http://ro.bunion-fix.com/';
+var projectName = address.split('/')[2], projectDir = projectName + '/';
+
+if (!fs.existsSync(projectName)) {
+    fs.mkdirSync(projectName, function (err, folder) {
+        if (err) {
+            console.error(`Can't create folder with name "${projectName}"`);
+        } else if (folder) {
+            projectDir = folder + '/';
+        }
+    });
+}
+
+exec(`phantomjs index.js ${address}`, function(error, stdout, stderr) {
     var wpSource;
 
     if (error) {
@@ -20,22 +31,22 @@ exec('phantomjs index.js http://ro.bunion-fix.com/', function(error, stdout, std
         wpSource = JSON.parse(stdout, true);
     }
 
-    // fs.writeFileSync('indexNev.html', "<!DOCTYPE html>\n<html>\n" + wpSource.content + "\n</html>");
+    fs.writeFileSync(projectDir + 'index.html', "<!DOCTYPE html>\n<html>\n" + wpSource.content + "\n</html>");
 
-    // for (i = 1; i < wpSource.length; i++) {
-    //     for (itm in wpSource[i]) {
-    //         var fName  = path.basename(url.parse(itm).pathname);
-    //
-    //         fs.readFile(itm);
-    //     }
-    // }
+    for (i = 1; i < wpSource.length; i++) {
+        for (itm in wpSource[i]) {
+            var fName  = path.basename(url.parse(itm).pathname);
+
+            fs.readFile(itm);
+        }
+    }
 
     resKeys = Object.keys(wpSource);
 
     for (i = 1; i < resKeys.length; i++) {
         for (itms in wpSource[resKeys[i]]) {
             if (wpSource[resKeys[i]][itms].substring(0,4) != 'http') {
-                wpSource[resKeys[i]][itms] = domain + wpSource[resKeys[i]][itms];
+                wpSource[resKeys[i]][itms] = address + wpSource[resKeys[i]][itms];
             }
             httpGet(wpSource[resKeys[i]][itms]);
         }
@@ -55,7 +66,7 @@ exec('phantomjs index.js http://ro.bunion-fix.com/', function(error, stdout, std
         } else {
             ext = 'none';
         }
-        
+
         if (outdirs.indexOf(ext.substring(1)) >= 0) {
             outdir = outdirs[outdirs.indexOf(ext.substring(1))]
         }
@@ -64,10 +75,10 @@ exec('phantomjs index.js http://ro.bunion-fix.com/', function(error, stdout, std
             method = https;
         }
 
-        if (!fs.existsSync(outdir)) {
-            fs.mkdirSync(outdir, (err, folder) => {
+        if (!fs.existsSync(projectDir + outdir)) {
+            fs.mkdirSync(projectDir + outdir, (err, folder) => {
                 if (err) {
-                    console.error(`Folder with name ${outdir} already exists`);
+                    console.error(`Folder with name ${projectDir + outdir} already exists`);
                 }
             });
         } else {
@@ -75,7 +86,7 @@ exec('phantomjs index.js http://ro.bunion-fix.com/', function(error, stdout, std
         }
 
         method.get(filePath, (res) => {
-            var writer = fs.createWriteStream(`${outdir}/${fileName}`, {
+            var writer = fs.createWriteStream(`${projectDir + outdir}/${fileName}`, {
                 flags: 'w',
                 fd: null,
                 mode: 0o777,
