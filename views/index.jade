@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  form#rqst-frm
+    input#link(type='text', name='linkname',placeholder='Enter target link here...')
+    input(type='submit', value='download')
+
+    script.
+      $('#rqst-frm').on('submit', function (e) {
+        e.preventDefault();
+
+        $.ajax({
+          method: 'get',
+          data: $('form').serialize(),
+          url: 'getpage'
+        }).success(function (data) {
+          document.write(data.toString());
+        });
+      });
+
+block mainframe
+  iframe#mainframe(src="#{result}")

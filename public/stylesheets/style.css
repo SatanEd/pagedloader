@@ -1,0 +1,63 @@
+body {
+  padding: 0;
+  margin:0;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+*{
+  outline: none;
+}
+
+a {
+  color: #00B7FF;
+}
+
+#rqst-frm{
+  position: relative;
+  display: block;
+  width: 100%;
+  height:90px;
+  background: rgba(20,20,20,0.9);
+}
+
+#rqst-frm #link{
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 60px;
+  top:0;
+  text-align: center;
+  color: #ebebeb;
+  background: transparent;
+  border: 0;
+  font: 400 16px "Arial", sans-serif;
+  letter-spacing: 1px;
+}
+
+#rqst-frm input[type="submit"]{
+  position: relative;
+  border: 0;
+  display: block;
+  width:100%;
+  height: 30px;
+  color: #e4e4e4;
+  -webkit-box-shadow: inset 0 1px 1px rgba(255,255,255,0.2);
+  -moz-box-shadow: inset 0 1px 1px rgba(255,255,255,0.2);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.2);
+  background: linear-gradient(top, rgba(255,255,255, 0.1) 0%, rgba(255,255,255, 0) 100%);
+  background: -ms-linear-gradient(top, rgba(255,255,255, 0.1) 0%, rgba(255,255,255, 0) 100%);
+  background: -moz-linear-gradient(top, rgba(255,255,255, 0.1) 0%, rgba(255,255,255, 0) 100%);
+  background: -o-linear-gradient(top, rgba(255,255,255, 0.1) 0%, rgba(255,255,255, 0) 100%);
+  background: -webkit-linear-gradient(top, rgba(255,255,255, 0.1) 0%, rgba(255,255,255, 0) 100%);
+  cursor: pointer;
+  font: 400 12px "Arial", sans-serif;
+  text-transform: uppercase;
+}
+
+#mainframe{
+  position: relative;
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  height: 800px;
+}
