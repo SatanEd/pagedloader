@@ -1,7 +1,9 @@
 var fs = require('fs');
 var page = require('webpage').create();
+var system = require('system');
+var args = system.args;
 
-var linkToPage = 'http://ro.bunion-fix.com/';
+var linkToPage = args[1];
 
 page.open(linkToPage, function () {
     page.includeJs('https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js', function () {
