@@ -58,3 +58,7 @@ function readDirRec(dir) {
     }
     return fd;
 }
+
+function get() {
+
+}
